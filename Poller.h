@@ -8,7 +8,7 @@
 #include "Timestamp.h"
 #include "nocopyable.h"
 
-// muduo库多路事件分发器的核心IO复用模块
+// 多路事件分发器的核心IO复用模块
 class Poller : nocopyable {
 public:
     using ChannelList = std::vector<Channel *>;
