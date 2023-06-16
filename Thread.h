@@ -4,13 +4,15 @@
 #include <memory>
 #include <unistd.h>
 #include <atomic>
+#include <thread>
+#include <string>
 #include "nocopyable.h"
 
 class Thread {
 public:
     using ThreadFunc = std::function<void()>;
 
-    Thread(ThreadFunc, const std::string &name = string());
+    Thread(ThreadFunc, const std::string &name = std::string());
     ~Thread();
 
     void start();
@@ -29,9 +31,9 @@ private:
     bool joined_;
     std::shared_ptr<std::thread> thread_;
 
-    pid_t tid;
+    pid_t tid_;
     ThreadFunc func_;
     std::string name_;
-    static std::atomic_int32 numCreated_;
+    static std::atomic_int32_t numCreated_;
 
 };
