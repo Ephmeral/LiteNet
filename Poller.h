@@ -14,7 +14,7 @@ public:
     using ChannelList = std::vector<Channel *>;
 
     Poller(EventLoop *loop);
-    virtual ~Poller();
+    virtual ~Poller() = default;
 
     // 给所有IO复用保留统一的接口
     virtual Timestamp poll(int timeoutMs, ChannelList *activeChannels) = 0;
