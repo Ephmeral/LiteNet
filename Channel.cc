@@ -3,9 +3,9 @@
 #include "Logger.h"
 #include <sys/epoll.h>
 
-const int kNoneEvent = 0;
-static const int kReadEvent = EPOLLIN | EPOLLPRI;
-static const int kWriteEvent = EPOLLOUT;
+const int Channel::kNoneEvent{0};
+const int Channel::kReadEvent{EPOLLIN | EPOLLPRI};
+const int Channel::kWriteEvent{EPOLLOUT};
 
 Channel::Channel(EventLoop *loop, int fd)
     : loop_(loop), fd_(fd) {
