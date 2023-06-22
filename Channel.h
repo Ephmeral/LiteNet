@@ -34,7 +34,7 @@ public:
 
     int fd() const { return fd_; }
     int events() const { return events_; }
-    void set_events(int events) { events_ = events; }
+    void set_revents(int events) { revents_ = events; }
 
     // 设置fd相应的事件
     void enableReading() {
