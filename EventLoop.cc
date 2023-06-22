@@ -18,7 +18,7 @@ const int kPollTimeMs = 100000;
 int createEventfd() {
     int evtfd = ::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
     if (evtfd < 0) {
-        LOG_FATAL("eventfd error:%d\n", error);
+        LOG_FATAL("EventLoop::eventfd error:%d\n", error);
     }
     return evtfd;
 }
@@ -33,9 +33,9 @@ EventLoop::EventLoop()
     , wakeupChannel_(new Channel(this, wakeupFd_))
     , currentActiveChannel_(nullptr) {
 
-    LOG_DEBUG("EventLoop created %p in thread %d\n", this, threadId_);
+    LOG_DEBUG("EventLoop::EventLoop created %p in thread %d\n", this, threadId_);
     if (t_loopInThisThread) {
-        LOG_FATAL("Another EventLoop %p exists in this thread %d\n", t_loopInThisThread, threadId_);
+        LOG_FATAL("EventLoop::Another EventLoop %p exists in this thread %d\n", t_loopInThisThread, threadId_);
     } else {
         t_loopInThisThread = this;
     }
@@ -55,15 +55,14 @@ EventLoop::~EventLoop() {
 
 // 开启事件循环
 void EventLoop::loop() {
+    LOG_INFO("EventLoop::EventLoop %p start looping\n", this);
     looping_ = true;
     quit_ = false;
-
-    LOG_INFO("EventLoop %p start looping\n", this);
 
     while (!quit_) {
         activeChannels_.clear();
         // 监听client的fd以及wakeupFD
-        pollReturnTime_ = poller_->poll(kPollTimeMs, &activeChannels_);
+        pollReturnTime_ = poller_->poll(kPollTimeMs, activeChannels_);
         for (Channel *channel : activeChannels_) {
             // Poller监听哪些Channel发送事件了，然后上报给EventLoop，通知Channel处理相应的事件
             channel->handleEvent(pollReturnTime_);
@@ -71,7 +70,7 @@ void EventLoop::loop() {
         // 执行当前EventLoop事件循环需要的回调操作
         doPendingFunctors();
     }
-    LOG_INFO("EventLoop %p stop loop\n", this);
+    LOG_INFO("EventLoop::EventLoop %p stop loop\n", this);
     looping_ = false;
 }
 // 退出事件循环 
