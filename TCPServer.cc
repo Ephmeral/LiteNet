@@ -11,7 +11,15 @@ EventLoop *CheckLoopNotNull(EventLoop *loop) {
 }
 
 TCPServer::TCPServer(EventLoop *loop, const InetAddress &listenAddr, const std::string &nameArg, Option option)
-    : loop_(CheckLoopNotNull(loop)), ipPort_(listenAddr.toIpPort()), name_(nameArg), acceptor_(new Acceptor(loop, listenAddr, option)), threadPool_(new EventLoopThreadPool(loop_, name_)), connectionCallback_(), messageCallback_(), nextConnId_(1) {
+    : loop_(CheckLoopNotNull(loop))
+    , ipPort_(listenAddr.toIpPort())
+    , name_(nameArg)
+    , acceptor_(new Acceptor(loop, listenAddr, option))
+    , threadPool_(new EventLoopThreadPool(loop_, name_))
+    , connectionCallback_()
+    , messageCallback_()
+    , nextConnId_(1)
+    , started_(0) {
     acceptor_->setNewConnectionCallback(std::bind(&TCPServer::newConnection, this,
                                                   std::placeholders::_1, std::placeholders::_2));
 }
