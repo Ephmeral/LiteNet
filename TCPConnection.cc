@@ -15,7 +15,8 @@ TCPConnection::TCPConnection(EventLoop *loop,
                              int sockfd,
                              const InetAddress &localAddr,
                              const InetAddress &peerAddr)
-    : loop_(loop), name_(nameArg), state_(kConnecting), reading_(true), socket_(new Socket(sockfd)), channel_(new Channel(loop, sockfd)), localAddr_(localAddr), peerAddr_(peerAddr), highWaterMark_(64 * 1024 * 1024) {
+    : loop_(loop), name_(nameArg), state_(kConnecting), reading_(true), socket_(new Socket(sockfd))
+    , channel_(new Channel(loop, sockfd)), localAddr_(localAddr), peerAddr_(peerAddr), highWaterMark_(64 * 1024 * 1024) {
     // 给channel设置相应的回调函数，Poller通知Channel感兴趣的事件发生了，Channel会回调相应的操作
     channel_->setReadCallback(std::bind(&TCPConnection::handleRead, this, std::placeholders::_1));
     channel_->setWriteCallback(std::bind(&TCPConnection::handleWrite, this));

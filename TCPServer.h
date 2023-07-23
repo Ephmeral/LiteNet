@@ -29,6 +29,7 @@ public:
     TCPServer(EventLoop *loop, const InetAddress &listenAddr, const std::string &nameArg, Option option = kNoReusePort);
     ~TCPServer();
 
+    // 设置对应的回调
     void setThreadInitCallback(const ThreadInitCallback &cb) { threadInitCallback_ = cb; }
     void setConnectionCallback(const ConnectionCallback &cb) { connectionCallback_ = cb; }
     void setMessageCallback(const MessageCallback &cb) { messageCallback_ = cb; }

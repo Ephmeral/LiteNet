@@ -1,2 +1,5 @@
-.vscode/*
-.idea/*
+.vscode/
+.idea/
+build/
+lib/
+example/server
